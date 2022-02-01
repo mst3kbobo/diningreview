@@ -71,6 +71,8 @@ git remote add origin https://github.com/mst3kbobo/diningreview.git
 pom.xml
 README.md
 ```
+9. Commit
+
 Note: The above instructions were added to this README.md as I walked through the steps.
 
 
