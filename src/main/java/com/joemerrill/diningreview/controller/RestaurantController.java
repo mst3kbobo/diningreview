@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public RestaurantController(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
