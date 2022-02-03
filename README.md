@@ -1,19 +1,23 @@
 # Dining Review
 
 Demo project for learning Java and Spring Boot via Codecademy. 
-This is from the "Create REST APIs with Spring and Java Skill Path" course on Codecademy.
+This is from the "Create REST APIs with Spring and Java Skill Path" course.
+
 ---
-Run from Terminal:  
+
+#### Run from Terminal:  
 Start: `./mvnw spring-boot:run`  
 Stop: `Control+C`
 
-curl Commands for testing
+#### curl Commands for testing
 ```
 curl localhost:8080\restaurants
 curl localhost:8080\restaurants\1
 ```
 
-## Project Setup
+---
+
+### Project Setup
 
 The following details initial project setup until source control.
 
