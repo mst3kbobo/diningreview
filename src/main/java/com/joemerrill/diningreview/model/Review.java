@@ -24,4 +24,6 @@ public class Review {
     private Integer eggScore;
     private Integer dairyScore;
     private Integer glutenScore;
+
+    private ReviewStatus status;
 }
