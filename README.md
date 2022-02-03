@@ -2,6 +2,16 @@
 
 Demo project for learning Java and Spring Boot via Codecademy. 
 This is from the "Create REST APIs with Spring and Java Skill Path" course on Codecademy.
+---
+Run from Terminal:  
+Start: `./mvnw spring-boot:run`  
+Stop: `Control+C`
+
+curl Commands for testing
+```
+curl localhost:8080\restaurants
+curl localhost:8080\restaurants\1
+```
 
 ## Project Setup
 
