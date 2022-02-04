@@ -15,6 +15,7 @@ Stop: `Control+C`
 ```
 curl localhost:8080/restaurants
 curl localhost:8080/restaurants/1
+curl "localhost:8080/restaurants/search?zipcode=32830&interest=gluten"
 
 curl localhost:8080/users/Mickey
 curl -X POST -i -H "Content-Type: application/json" -d '{"displayName" : "Pluto", "city" : "Anaheim", "state" : "CA", "zipCode" : 92801, "hasPeanutInterest" : false, "hasEggInterest" : false, "hasDairyInterest" : false, "hasGlutenInterest" : true}' localhost:8080/users
@@ -100,6 +101,7 @@ Note: The above instructions were added to this README.md as I walked through th
 
 ### Documentation Resources
 
+* [Spring JPA Query creation](https://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#jpa.query-methods.query-creation)
 * [org.springframework.util.ObjectUtils.isEmpty](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/ObjectUtils.html#isEmpty-java.lang.Object-)
 * [HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
 
