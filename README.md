@@ -5,14 +5,20 @@ This is from the "Create REST APIs with Spring and Java Skill Path" course.
 
 ---
 
-#### Run from Terminal:  
+#### Run from Terminal:
+
 Start: `./mvnw spring-boot:run`  
 Stop: `Control+C`
 
-#### curl Commands for testing
+#### curl Commands for testing:
+
 ```
-curl localhost:8080\restaurants
-curl localhost:8080\restaurants\1
+curl localhost:8080/restaurants
+curl localhost:8080/restaurants/1
+
+curl localhost:8080/users/Mickey
+curl -X POST -i -H "Content-Type: application/json" -d '{"displayName" : "Pluto", "city" : "Anaheim", "state" : "CA", "zipCode" : 92801, "hasPeanutInterest" : false, "hasEggInterest" : false, "hasDairyInterest" : false, "hasGlutenInterest" : true}' localhost:8080/users
+
 ```
 
 ---
@@ -88,6 +94,12 @@ README.md
 9. Commit
 
 Note: The above instructions were added to this README.md as I walked through the steps.
+
+---
+
+### Documentation Resources
+
+* [org.springframework.util.ObjectUtils.isEmpty](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/ObjectUtils.html#isEmpty-java.lang.Object-)
 
 
 
