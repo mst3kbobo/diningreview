@@ -50,5 +50,53 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public User updateUser(@RequestBody User user) {
+
+        if (ObjectUtils.isEmpty(user.getDisplayName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<User> existingUserOptional = userRepository.findByDisplayName(user.getDisplayName());
+        if (!existingUserOptional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        User updatedUser = existingUserOptional.get();
+
+        // Note: displayName should not be updated.
+
+        if (user.getCity() != null) {
+            updatedUser.setCity(user.getCity());
+        }
+
+        if (user.getState() != null) {
+            updatedUser.setState(user.getState());
+        }
+
+        if (user.getZipCode() != null) {
+            updatedUser.setZipCode(user.getZipCode());
+        }
+
+        if (user.getHasPeanutInterest() != null) {
+            updatedUser.setHasPeanutInterest(user.getHasPeanutInterest());
+        }
+
+        if (user.getHasEggInterest() != null) {
+            updatedUser.setHasEggInterest(user.getHasEggInterest());
+        }
+
+        if (user.getHasDairyInterest() != null) {
+            updatedUser.setHasDairyInterest(user.getHasDairyInterest());
+        }
+
+        if (user.getHasGlutenInterest() != null) {
+            updatedUser.setHasGlutenInterest(user.getHasGlutenInterest());
+        }
+
+        return userRepository.save(updatedUser);
+    }
+
 
 }
