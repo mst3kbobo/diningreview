@@ -3,6 +3,6 @@ package com.joemerrill.diningreview.model;
 public enum ReviewStatus {
     PENDING,
     CANCELED,
-    ACCEPTED,
+    APPROVED,
     REJECTED
 }

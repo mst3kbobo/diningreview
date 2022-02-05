@@ -1,28 +1,27 @@
 package com.joemerrill.diningreview.controller;
 
+import com.joemerrill.diningreview.model.AdminReviewAction;
 import com.joemerrill.diningreview.model.Restaurant;
 import com.joemerrill.diningreview.model.Review;
 import com.joemerrill.diningreview.model.ReviewStatus;
-import com.joemerrill.diningreview.model.User;
 import com.joemerrill.diningreview.repository.RestaurantRepository;
 import com.joemerrill.diningreview.repository.ReviewRepository;
 import com.joemerrill.diningreview.repository.UserRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/reviews")
-public class ReviewController {
+@RequestMapping("/admin")
+public class AdminController {
 
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public ReviewController(
+    public AdminController(
             ReviewRepository reviewRepository,
             UserRepository userRepository,
             RestaurantRepository restaurantRepository
@@ -32,31 +31,33 @@ public class ReviewController {
         this.restaurantRepository = restaurantRepository;
     }
 
-    @GetMapping
-    public Iterable<Review> getAllReviews() {
-        return reviewRepository.findAll();
+    @GetMapping("/reviews")
+    public Iterable<Review> getReviewsByStatus(@RequestParam(name = "status") String status) {
+
+        ReviewStatus reviewStatus;
+        try {
+            reviewStatus = Enum.valueOf(ReviewStatus.class, status.toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        return reviewRepository.findByStatus(reviewStatus);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Review addReview(@RequestBody Review review) {
+    @PutMapping("/reviews/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void adminReviewAction(
+            @PathVariable(name = "id") Long reviewId,
+            @RequestBody AdminReviewAction adminReviewAction
+    ) {
 
-        if (ObjectUtils.isEmpty(review.getSubmittedBy()) || ObjectUtils.isEmpty(review.getRestaurantId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
+
+        if (!reviewOptional.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        if (ObjectUtils.isEmpty(review.getPeanutScore()) &&
-                ObjectUtils.isEmpty(review.getEggScore()) &&
-                ObjectUtils.isEmpty(review.getDairyScore()) &&
-                ObjectUtils.isEmpty(review.getGlutenScore())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
-        Optional<User> userOptional = userRepository.findByDisplayName(review.getSubmittedBy());
-
-        if (!userOptional.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Request cannot be processed.");
-        }
+        Review review = reviewOptional.get();
 
         Optional<Restaurant> restaurantOptional = restaurantRepository.findById(review.getRestaurantId());
 
@@ -65,9 +66,13 @@ public class ReviewController {
                     "Request cannot be processed. Restaurant not found.");
         }
 
-        review.setStatus(ReviewStatus.PENDING);
+        if (adminReviewAction.isApprove()) {
+            review.setStatus(ReviewStatus.APPROVED);
+        } else {
+            review.setStatus(ReviewStatus.REJECTED);
+        }
 
-        return reviewRepository.save(review);
+        reviewRepository.save(review);
+
     }
-
 }

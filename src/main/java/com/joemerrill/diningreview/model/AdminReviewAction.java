@@ -1,17 +1,13 @@
 package com.joemerrill.diningreview.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * Represents whether an admin accepts a user review.
+ * Represents whether an admin approves a user review.
  */
+@Getter
+@Setter
 public class AdminReviewAction {
-
-    private boolean acceptReview;
-
-    public boolean isAcceptReview() {
-        return acceptReview;
-    }
-
-    public void setAcceptReview(boolean acceptReview) {
-        this.acceptReview = acceptReview;
-    }
+    private boolean approve;
 }
