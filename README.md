@@ -5,22 +5,31 @@ This is from the "Create REST APIs with Spring and Java Skill Path" course.
 
 ---
 
-#### Run from Terminal:
+### Run from Terminal:
 
 Start: `./mvnw spring-boot:run`  
 Stop: `Control+C`
 
-#### curl Commands for testing:
+### curl Commands for testing:
 
+Restaurants
 ```
 curl localhost:8080/restaurants
 curl localhost:8080/restaurants/1
 curl "localhost:8080/restaurants/search?zipcode=32830&interest=gluten"
+```
 
+Users
+```
 curl localhost:8080/users/Mickey
 curl -X POST -i -H "Content-Type: application/json" -d '{"displayName" : "Pluto", "city" : "Anaheim", "state" : "CA", "zipCode" : 92801, "hasPeanutInterest" : false, "hasEggInterest" : false, "hasDairyInterest" : false, "hasGlutenInterest" : true}' localhost:8080/users
 curl -X PUT -i -H "Content-Type: application/json" -d '{"displayName" : "Pluto", "hasEggInterest" : true}' localhost:8080/users
 curl localhost:8080/users/Pluto
+```
+
+Reviews
+```
+curl -X POST -i -H "Content-Type: application/json" -d '{"restaurantId" : 1, "submittedBy" : "Joe", "review" : "Loved the Dole Whip!", "glutenScore" : "5"}' localhost:8080/reviews
 ```
 
 ---
