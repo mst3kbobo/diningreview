@@ -32,6 +32,12 @@ Reviews
 curl -X POST -i -H "Content-Type: application/json" -d '{"restaurantId" : 1, "submittedBy" : "Joe", "review" : "Loved the Dole Whip!", "glutenScore" : "5"}' localhost:8080/reviews
 ```
 
+Admin
+```
+curl "localhost:8080/admin/reviews?status=pending"
+curl -X PUT -i -H "Content-Type: application/json" -d '{"approve" : true}' localhost:8080/admin/reviews/7
+```
+
 ---
 
 ### Project Setup
