@@ -39,7 +39,12 @@ public class RestaurantController {
             @RequestParam String interest
     ) {
 
-        Integer zip = Integer.parseInt(zipCode);
+        Integer zip;
+        try {
+            zip = Integer.parseInt(zipCode);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         validateZipCode(zip);
 
         Iterable<Restaurant> restaurants;
