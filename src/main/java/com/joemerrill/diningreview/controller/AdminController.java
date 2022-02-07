@@ -48,7 +48,7 @@ public class AdminController {
 
         Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
 
-        if (!reviewOptional.isPresent()) {
+        if (reviewOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
@@ -56,7 +56,7 @@ public class AdminController {
 
         Optional<Restaurant> restaurantOptional = restaurantRepository.findById(review.getRestaurantId());
 
-        if (!restaurantOptional.isPresent()) {
+        if (restaurantOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "Request cannot be processed. Restaurant not found.");
         }
