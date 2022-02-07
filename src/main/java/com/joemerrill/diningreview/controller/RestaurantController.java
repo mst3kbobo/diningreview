@@ -1,5 +1,6 @@
 package com.joemerrill.diningreview.controller;
 
+import com.joemerrill.diningreview.model.Interest;
 import com.joemerrill.diningreview.model.Restaurant;
 import com.joemerrill.diningreview.repository.RestaurantRepository;
 import org.springframework.http.HttpStatus;
@@ -47,23 +48,30 @@ public class RestaurantController {
         }
         validateZipCode(zip);
 
+        Interest interestEnum;
+        try {
+            interestEnum = Enum.valueOf(Interest.class, interest.toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Interest not found.");
+        }
+
         Iterable<Restaurant> restaurants;
 
-        switch (interest.toLowerCase()) {
-            case "peanut":
+        switch (interestEnum) {
+            case PEANUT:
                 restaurants = restaurantRepository.findByZipCodeAndPeanutScoreNotNullOrderByPeanutScoreDesc(zip);
                 break;
-            case "egg":
+            case EGG:
                 restaurants = restaurantRepository.findByZipCodeAndEggScoreNotNullOrderByEggScoreDesc(zip);
                 break;
-            case "dairy":
+            case DAIRY:
                 restaurants = restaurantRepository.findByZipCodeAndDairyScoreNotNullOrderByDairyScoreDesc(zip);
                 break;
-            case "gluten":
+            case GLUTEN:
                 restaurants = restaurantRepository.findByZipCodeAndGlutenScoreNotNullOrderByGlutenScoreDesc(zip);
                 break;
             default:
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new AssertionError("Invalid Interest enum provided.");
         }
 
         return restaurants;
