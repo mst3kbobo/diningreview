@@ -1,5 +1,6 @@
 package com.joemerrill.diningreview.controller;
 
+import com.joemerrill.diningreview.model.Interest;
 import com.joemerrill.diningreview.model.Restaurant;
 import com.joemerrill.diningreview.repository.RestaurantRepository;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
     private final RestaurantRepository restaurantRepository;
+
+    private final String usZipCodeRegex = "^[0-9]{5}(?:-[0-9]{4})?$";
+    private final Pattern usZipCodePattern = Pattern.compile(usZipCodeRegex);
 
     public RestaurantController(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
@@ -35,26 +40,38 @@ public class RestaurantController {
             @RequestParam String interest
     ) {
 
-        // TODO: Validate Zip Code
-        Integer zip = Integer.parseInt(zipCode);
+        Integer zip;
+        try {
+            zip = Integer.parseInt(zipCode);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        validateZipCode(zip);
+
+        Interest interestEnum;
+        try {
+            interestEnum = Enum.valueOf(Interest.class, interest.toUpperCase());
+        } catch (IllegalArgumentException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Interest not found.");
+        }
 
         Iterable<Restaurant> restaurants;
 
-        switch (interest.toLowerCase()) {
-            case "peanut":
+        switch (interestEnum) {
+            case PEANUT:
                 restaurants = restaurantRepository.findByZipCodeAndPeanutScoreNotNullOrderByPeanutScoreDesc(zip);
                 break;
-            case "egg":
+            case EGG:
                 restaurants = restaurantRepository.findByZipCodeAndEggScoreNotNullOrderByEggScoreDesc(zip);
                 break;
-            case "dairy":
+            case DAIRY:
                 restaurants = restaurantRepository.findByZipCodeAndDairyScoreNotNullOrderByDairyScoreDesc(zip);
                 break;
-            case "gluten":
+            case GLUTEN:
                 restaurants = restaurantRepository.findByZipCodeAndGlutenScoreNotNullOrderByGlutenScoreDesc(zip);
                 break;
             default:
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new AssertionError("Invalid Interest enum provided.");
         }
 
         return restaurants;
@@ -76,8 +93,20 @@ public class RestaurantController {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
 
-        // TODO: Validate Zip Code
+        validateZipCode(restaurant.getZipCode());
 
         return restaurantRepository.save(restaurant);
+    }
+
+    /**
+     * Validate a US formatted Zip Code
+     * @param zipCode Zip code to validate
+     */
+    private void validateZipCode(Integer zipCode) {
+
+        String zipCodeString = zipCode.toString();
+        if (!usZipCodePattern.matcher(zipCodeString).matches()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

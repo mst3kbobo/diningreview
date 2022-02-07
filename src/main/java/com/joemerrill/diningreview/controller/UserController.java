@@ -27,7 +27,8 @@ public class UserController {
         }
 
         Optional<User> userOptional = userRepository.findByDisplayName(displayName);
-        if (!userOptional.isPresent()) {
+
+        if (userOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
@@ -43,6 +44,7 @@ public class UserController {
         }
 
         Optional<User> existingUserOptional = userRepository.findByDisplayName(user.getDisplayName());
+
         if (existingUserOptional.isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
@@ -59,7 +61,8 @@ public class UserController {
         }
 
         Optional<User> existingUserOptional = userRepository.findByDisplayName(user.getDisplayName());
-        if (!existingUserOptional.isPresent()) {
+
+        if (existingUserOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
@@ -97,6 +100,5 @@ public class UserController {
 
         return userRepository.save(updatedUser);
     }
-
 
 }

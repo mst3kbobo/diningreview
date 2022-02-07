@@ -10,6 +10,8 @@ This is from the "Create REST APIs with Spring and Java Skill Path" course.
 Start: `./mvnw spring-boot:run`  
 Stop: `Control+C`
 
+Test: `./mvnw test`
+
 ### curl Commands for testing:
 
 Restaurants
@@ -119,6 +121,9 @@ Note: The above instructions were added to this README.md as I walked through th
 * [Spring JPA Query creation](https://docs.spring.io/spring-data/jpa/docs/1.10.1.RELEASE/reference/html/#jpa.query-methods.query-creation)
 * [org.springframework.util.ObjectUtils.isEmpty](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/ObjectUtils.html#isEmpty-java.lang.Object-)
 * [HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+* [java.util.regex.Pattern](https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html)
+* [Spring: Testing the Web Layer](https://spring.io/guides/gs/testing-web/)
+* [org.junit.jupiter.api.Assertions](https://junit.org/junit5/docs/5.0.1/api/org/junit/jupiter/api/Assertions.html)
 
 
 

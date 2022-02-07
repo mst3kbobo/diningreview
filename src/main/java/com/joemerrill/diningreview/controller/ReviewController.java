@@ -54,13 +54,13 @@ public class ReviewController {
 
         Optional<User> userOptional = userRepository.findByDisplayName(review.getSubmittedBy());
 
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Request cannot be processed.");
         }
 
         Optional<Restaurant> restaurantOptional = restaurantRepository.findById(review.getRestaurantId());
 
-        if (!restaurantOptional.isPresent()) {
+        if (restaurantOptional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "Request cannot be processed. Restaurant not found.");
         }
